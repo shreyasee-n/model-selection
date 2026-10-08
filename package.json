@@ -1,0 +1,15 @@
+{
+  "name": "assisted-model-selection-poc",
+  "version": "1.0.0",
+  "description": "Phase 0 assisted and Phase 1 automatic model selection proof of concept for DigitalOcean App Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

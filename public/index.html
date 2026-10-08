@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assisted Model Selection</title>
+    <link rel="stylesheet" href="/styles.css?v=13" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Model selection PoC</p>
+          <h1>Assisted Model Selection</h1>
+        </div>
+      </header>
+
+      <main>
+        <section class="panel prompt-panel">
+          <p class="kicker">Start with your task</p>
+          <h2>What would you like to do?</h2>
+          <form id="task-form">
+            <label class="sr-only" for="prompt-input">Describe what you want to do</label>
+            <textarea id="prompt-input" rows="5" maxlength="10000" required
+              placeholder="Describe what you want to accomplish…"></textarea>
+            <div class="prompt-footer">
+              <p class="helper-text">Your request helps us find models that fit.</p>
+              <button id="continue-btn" class="primary-btn" type="submit">Continue</button>
+            </div>
+          </form>
+        </section>
+
+        <nav class="phase-tabs" role="tablist" aria-label="Model selection experience">
+          <button id="phase-0-tab" class="phase-tab active" type="button" role="tab"
+            aria-controls="phase-0-view" aria-selected="true">Phase 0 · Assisted</button>
+          <button id="phase-1-tab" class="phase-tab" type="button" role="tab"
+            aria-controls="phase-1-view" aria-selected="false">Phase 1 · Automatic</button>
+        </nav>
+
+        <section id="phase-0-view" class="phase-view" role="tabpanel" aria-labelledby="phase-0-tab" hidden>
+          <section id="recommendations" class="panel recommendations-panel">
+            <div class="section-header">
+              <div>
+                <p class="kicker">Phase 0 · Assisted selection</p>
+                <h2>Models that fit this request</h2>
+                <p id="recommendation-summary" class="recommendation-summary"></p>
+              </div>
+            </div>
+
+            <section id="agent-plan" class="agent-plan" aria-live="polite" hidden>
+              <h3>Proposed plan</h3>
+              <p class="helper-text">Preview only. No tools or external actions will run in this demo.</p>
+              <ol id="plan-steps"></ol>
+            </section>
+
+            <div id="model-list" class="model-list"></div>
+            <button id="all-models-btn" class="text-btn" type="button">See all available models</button>
+          </section>
+        </section>
+
+        <section id="phase-1-view" class="phase-view" role="tabpanel" aria-labelledby="phase-1-tab" hidden>
+          <section class="panel recommendations-panel">
+            <div class="section-header">
+              <div>
+                <p class="kicker">Phase 1 · Automatic selection</p>
+                <h2 id="automatic-title">We selected a model for you</h2>
+                <p id="automatic-summary" class="recommendation-summary"></p>
+              </div>
+            </div>
+
+            <section id="phase-1-agent-plan" class="agent-plan" aria-live="polite" hidden>
+              <h3>Proposed plan</h3>
+              <p class="helper-text">Preview only. No tools or external actions will run in this demo.</p>
+              <ol id="phase-1-plan-steps"></ol>
+            </section>
+
+            <div id="automatic-model-card" class="automatic-model-card"></div>
+            <button id="change-model-btn" class="secondary-btn" type="button">Change model</button>
+            <section id="override-options" class="override-options" hidden>
+              <h3>Choose a different model</h3>
+              <div id="override-model-list" class="model-list"></div>
+            </section>
+          </section>
+        </section>
+
+        <section id="execution-result" class="panel result-panel" aria-live="polite" hidden>
+          <p class="kicker">Demo execution</p>
+          <h2 id="result-title"></h2>
+          <p id="simulation-notice" class="helper-text">
+            Choose a model, then run it here. You can still change the choice before execution.
+          </p>
+          <div id="result-content" class="result-content"></div>
+          <button id="run-model-btn" class="primary-btn" type="button">Run selected model</button>
+          <div id="feedback-panel" class="feedback-panel" hidden>
+            <h3>Did this work for you?</h3>
+            <div class="feedback-actions">
+              <button class="feedback-btn" type="button" data-feedback="positive" aria-label="This worked for me">👍</button>
+              <button class="feedback-btn" type="button" data-feedback="negative" aria-label="This did not work for me">👎</button>
+            </div>
+            <form id="negative-feedback-form" hidden>
+              <label for="feedback-reason">What went wrong?</label>
+              <select id="feedback-reason">
+                <option value="">Choose an optional reason</option>
+                <option value="poor_quality">Poor quality</option>
+                <option value="incorrect">Incorrect</option>
+                <option value="incomplete">Did not complete task</option>
+                <option value="too_slow">Too slow</option>
+                <option value="too_expensive">Too expensive</option>
+                <option value="other">Other</option>
+              </select>
+              <button class="secondary-btn" type="submit">Submit feedback</button>
+            </form>
+            <p id="feedback-status" class="feedback-status" role="status"></p>
+          </div>
+        </section>
+
+        <p id="app-error" class="app-error" role="alert" hidden></p>
+      </main>
+
+      <template id="model-card-template">
+        <article class="model-card">
+          <div class="model-header">
+            <div>
+              <p class="model-label"></p>
+              <h3></h3>
+            </div>
+            <button class="secondary-btn select-model-btn" type="button">Choose model</button>
+          </div>
+          <div class="chip-row"></div>
+          <dl class="meta-grid">
+            <div><dt>Provider</dt><dd class="provider"></dd></div>
+            <div><dt>Context capacity</dt><dd class="context"></dd></div>
+            <div><dt>Estimated latency</dt><dd class="latency"></dd></div>
+            <div><dt>Estimated input cost</dt><dd class="cost"></dd></div>
+          </dl>
+          <p class="model-style"></p>
+          <p class="history"></p>
+          <ul class="strengths"></ul>
+        </article>
+      </template>
+    </div>
+
+    <script src="/app.js?v=13"></script>
+  </body>
+</html>
